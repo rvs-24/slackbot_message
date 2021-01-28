@@ -12,33 +12,38 @@ slackEvent.on('message', (event) => {
 
 var n=0;
 router.post('/', async(req, res, next) => {
-    const challenge = req.body.challenge
-   // console.log('ho');
+   const challenge = req.body.challenge
    const event = req.body.event
-   console.log(event);
-   //console.log(req.challenge);
-   //console.log(req.body.event);
-   //console.log(req);
-   if(event.text==='hi'){
-       n=n+1;
+   //console.log(event);
+   console.log(req.body);
+   if(event.text.includes('testing')){
+      // n=n+1;
    console.log(`Received a message event: user ${event.user} in channel ${event.channel} texted ${event.text}`);
-   console.log(n);
-   }
+   //console.log(n);
+   
    
    if(typeof event.user!=='undefined'){
    await Axios.post(
-       "https://hooks.slack.com/services/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",
+       "https://hooks.slack.com/services/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",
        {
-           text: event.text,
+	"blocks": [
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": `${event.text} \n\n<https://example.com|View request>`
+			        } 
+		}
+	         ]
        }
    );
+ }
 }
 
-//    console.log(req.body)
+
   res.json({
       challenge: event, 
   });
-  //res.send('hi');
 });
 
 module.exports = router;
